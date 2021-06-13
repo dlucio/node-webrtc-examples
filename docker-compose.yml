@@ -30,7 +30,7 @@ services:
     links:
       - frameland-hands-server
     volumes:
-      - ~/Workspace/DUCK/PhD/WebRTC/node-webrtc-examples:/usr/src/apps
+      - .:/usr/src/apps
     environment: 
       - HANDS_HOST=frameland-hands-server
       - HANDS_PORT=50055
