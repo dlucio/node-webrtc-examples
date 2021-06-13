@@ -3,8 +3,9 @@
 const bodyParser = require('body-parser');
 const browserify = require('browserify-middleware');
 const express = require('express');
-const { readdirSync, statSync } = require('fs');
+const { readdirSync, statSync, readFileSync } = require('fs');
 const { join } = require('path');
+const https = require('https')
 
 const { mount } = require('./lib/server/rest/connectionsapi');
 const WebRtcConnectionManager = require('./lib/server/connections/webrtcconnectionmanager');
@@ -42,9 +43,15 @@ const connectionManagers = examples.reduce((connectionManagers, example) => {
   return connectionManagers.set(example, connectionManager);
 }, new Map());
 
-const server = app.listen(3000, () => {
+// Tip from:
+// https://timonweb.com/javascript/running-expressjs-server-over-https/
+const server = https.createServer({
+  key: readFileSync('server.key'),
+  cert: readFileSync('server.cert')
+}, app)
+  .listen(3000, () => {
   const address = server.address();
-  console.log(`http://localhost:${address.port}\n`);
+  console.log(`Open your browse on: https://localhost:${address.port}\n`);
 
   server.once('close', () => {
     connectionManagers.forEach(connectionManager => connectionManager.close());

@@ -1,0 +1,37 @@
+version: '3'
+services:
+  frameland-hands-server:
+    # build:
+    #   context: ./
+    #   dockerfile: ./net/grpc/gateway/docker/node_server/Dockerfile
+    image: duck/dev
+    ports:
+      - "50055:50055"
+    volumes:
+      - /home/dlucio:/home/dlucio:ro
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: /home/dlucio/Workspace/DUCK/PhD/RESEARCH/FrameLand/mediapipe
+    environment:
+      - LOG_logtostderr=1
+    entrypoint: ./bazel-bin/mediapipe/frameland/services/hand_detection_server
+    tty: true
+
+  frameland-node-server:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    depends_on:
+      - frameland-hands-server
+    image: node:14
+    working_dir: /usr/src/apps
+    ports:
+      - 3000:3000
+    links:
+      - frameland-hands-server
+    volumes:
+      - ~/Workspace/DUCK/PhD/WebRTC/node-webrtc-examples:/usr/src/apps
+    environment: 
+      - HANDS_HOST=frameland-hands-server
+      - HANDS_PORT=50055
+    entrypoint: npm start 

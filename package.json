@@ -19,7 +19,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.20",
-    "Scope": "github:kevincennis/Scope",
+    "@grpc/proto-loader": "^0.6.2",
     "body-parser": "^1.18.3",
     "browserify-middleware": "^8.1.1",
     "canvas": "^2.4.1",
@@ -27,7 +27,9 @@
     "express": "^4.16.4",
     "fluent-ffmpeg": "^2.1.2",
     "fluent-ffmpeg-multistream": "^1.0.0",
+    "grpc": "^1.24.10",
     "node-fetch": "^2.3.0",
+    "Scope": "github:kevincennis/Scope",
     "uuid": "^3.3.2",
     "wrtc": "^0.4.3"
   },
